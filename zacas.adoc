@@ -20,7 +20,7 @@ register `rd`. For RV64, `AMOCAS.W` always sign-extends the value placed in
   {bits:  1, name: 'rl'},
   {bits:  1, name: 'aq'},
   {bits:  5, name: '00101', attr:'AMOCAS.W'},
-], config:{lanes: 8, hspace:1024}}
+], config:{lanes: 1, hspace:1024}}
 ....
 
 The operation performed by `AMOCAS.W` is as follows:
@@ -48,7 +48,7 @@ The operation performed by `AMOCAS.W` is as follows:
   {bits:  1, name: 'rl'},
   {bits:  1, name: 'aq'},
   {bits:  5, name: '00101', attr:'AMOCAS.D'},
-], config:{lanes: 8, hspace:1024}}
+], config:{lanes: 1, hspace:1024}}
 ....
 
 For RV32, `AMOCAS.D` atomically loads 64-bits of a data value from address in
@@ -120,7 +120,7 @@ pair is `x0`, then writes discard both halves of the pair result.
   {bits:  1, name: 'rl'},
   {bits:  1, name: 'aq'},
   {bits:  5, name: '00101', attr:'AMOCAS.Q'},
-], config:{lanes: 8, hspace:1024}}
+], config:{lanes: 1, hspace:1024}}
 ....
 
 The operation performed by `AMOCAS.Q` is as follows:
