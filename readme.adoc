@@ -1,10 +1,7 @@
-= RISC-V docs-spec-template
+= RISC-V Atomic compare-and-swap (CAS) instructions
 
-This repository is used to prime GitHub repos for the RISC-V organization which will be used
-to create specifications.
-
-**If you are reading this in a specification repo, please update the title for this section and
-provide your introduction to your repository.**
+The Zacas extension adds support for `amocas.w`, `amocas.d`, and `amocas.q`
+instructions to perform atomic compare-and-swap (CAS) operations.
 
 = License
 
@@ -13,7 +10,7 @@ See the link:LICENSE[LICENSE] file for details.
 
 = Contributors
 
-Contributors to this specification are contained in the link:contributors.adoc[contributors] file.
+Contributors to this specification are contained in the link:header.adoc[contributors] file.
 
 For instructions on how to contribute please see the link:CONTRIBUTING.md[CONTRIBUTING] file.
 
