@@ -7,8 +7,7 @@ OPTIONS := --trace -a compress \
            --attribute=pdf-fontsdir=docs-resources/fonts \
            --attribute=pdf-style=docs-resources/themes/riscv-pdf.yml \
            --failure-level=ERROR
-REQUIRES := --require=asciidoctor-bibtex \
-            --require=asciidoctor-diagram \
+REQUIRES := --require=asciidoctor-diagram \
             --require=asciidoctor-mathematical
 
 all: build
