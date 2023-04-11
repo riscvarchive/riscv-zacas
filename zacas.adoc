@@ -185,7 +185,7 @@ misaligned AMOs. Main memory and I/O regions may only support a subset or none o
 the processor-supported atomic operations.
 
 [width=100%]
-[%header, cols="^6,^20", grid=rows, frame=none]
+[%header, cols="6,20", grid=rows, frame=none]
 |===
 |AMO Class       | Supported Operations
 |`AMONone`       | None
