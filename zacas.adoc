@@ -12,14 +12,14 @@ register `rd`. For RV64, `AMOCAS.W` always sign-extends the value placed in
 [wavedrom, , ] 
 .... 
 {reg: [
-  {bits:  7, name: 'opcode', attr:`AMO`},
-  {bits:  5, name: 'rd', attr:`dest`},
-  {bits:  3, name: '010', attr:`width`},
-  {bits:  5, name: 'rs1', attr:`addr`},
-  {bits:  5, name: 'rs2', attr:`src`},
+  {bits:  7, name: 'opcode', attr:'AMO'},
+  {bits:  5, name: 'rd', attr:'dest'},
+  {bits:  3, name: '010', attr:'width'},
+  {bits:  5, name: 'rs1', attr:'addr'},
+  {bits:  5, name: 'rs2', attr:'src'},
   {bits:  1, name: 'rl'},
   {bits:  1, name: 'aq'},
-  {bits:  5, name: '00101', attr:`AMOCAS.W`},
+  {bits:  5, name: '00101', attr:'AMOCAS.W'},
 ], config:{lanes: 8, hspace:1024}}
 ....
 
@@ -40,14 +40,14 @@ The operation performed by `AMOCAS.W` is as follows:
 [wavedrom, , ] 
 .... 
 {reg: [
-  {bits:  7, name: 'opcode', attr:`AMO`},
-  {bits:  5, name: 'rd', attr:`dest`},
-  {bits:  3, name: '011', attr:`width`},
-  {bits:  5, name: 'rs1', attr:`addr`},
-  {bits:  5, name: 'rs2', attr:`src`},
+  {bits:  7, name: 'opcode', attr:'AMO'},
+  {bits:  5, name: 'rd', attr:'dest'},
+  {bits:  3, name: '011', attr:'width'},
+  {bits:  5, name: 'rs1', attr:'addr'},
+  {bits:  5, name: 'rs2', attr:'src'},
   {bits:  1, name: 'rl'},
   {bits:  1, name: 'aq'},
-  {bits:  5, name: '00101', attr:`AMOCAS.D`},
+  {bits:  5, name: '00101', attr:'AMOCAS.D'},
 ], config:{lanes: 8, hspace:1024}}
 ....
 
@@ -112,14 +112,14 @@ pair is `x0`, then writes discard both halves of the pair result.
 [wavedrom, , ] 
 .... 
 {reg: [
-  {bits:  7, name: 'opcode', attr:`AMO`},
-  {bits:  5, name: 'rd', attr:`dest`},
-  {bits:  3, name: '100', attr:`width`},
-  {bits:  5, name: 'rs1', attr:`addr`},
-  {bits:  5, name: 'rs2', attr:`src`},
+  {bits:  7, name: 'opcode', attr:'AMO'},
+  {bits:  5, name: 'rd', attr:'dest'},
+  {bits:  3, name: '100', attr:'width'},
+  {bits:  5, name: 'rs1', attr:'addr'},
+  {bits:  5, name: 'rs2', attr:'src'},
   {bits:  1, name: 'rl'},
   {bits:  1, name: 'aq'},
-  {bits:  5, name: '00101', attr:`AMOCAS.Q`},
+  {bits:  5, name: '00101', attr:'AMOCAS.Q'},
 ], config:{lanes: 8, hspace:1024}}
 ....
 
