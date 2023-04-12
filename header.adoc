@@ -1,9 +1,9 @@
 [[header]]
-:description: RISC-V Example Specification Document (Zexmpl)
+:description: Atomic Compare-and-swap (CAS) instructions
 :company: RISC-V.org
-:revdate: 1/2022
-:revnumber: 1.0
-:revremark: This document is in development. Assume everything can change. See http://riscv.org/spec-state for details.
+:revdate: 4/2023
+:revnumber: 0.1
+:revremark: This document is in development state. See http://riscv.org/spec-state for details.
 :url-riscv: http://riscv.org
 :doctype: book
 :preface-title: Preamble
@@ -17,9 +17,6 @@
 // needs to be changed? bug discussion started
 //:WaveDromEditorApp: app/wavedrom-editor.app
 :imagesoutdir: images
-:bibtex-file: example.bib
-:bibtex-order: alphabetical
-:bibtex-style: apa
 :icons: font
 :lang: en
 :listing-caption: Listing
@@ -36,15 +33,14 @@ endif::[]
 :footnote:
 :xrefstyle: short
 
-= RISC-V Example Specification Document (Zexmpl)
-Author 1; Author 2; RISC-V Task Group
+= Atomic compare-and-Swap (CAS) instructions (Zacas)
 
 // Preamble
 [WARNING]
 .This document is in the link:http://riscv.org/spec-state[Development state]
 ====
-Assume everything can change. This draft specification will change before
-being accepted as standard, so implementations made to this draft
+Assume everything can change. This draft specification will change before 
+being accepted as standard, so implementations made to this draft 
 specification will likely not conform to the future standard.
 ====
 
@@ -58,10 +54,29 @@ https://creativecommons.org/licenses/by/4.0/.
 Copyright 2022 by RISC-V International.
 
 [preface]
-include::contributors.adoc[]
+=== Contributors
+This RISC-V specification has been contributed to directly or indirectly by:
+Greg Favor, Ved Shanbhogue
 
-include::intro.adoc[]
-include::chapter2.adoc[]
-//the index must precede the bibliography
-include::index.adoc[]
-include::bibliography.adoc[]
+== Introduction
+
+Compare-and-swap (CAS) provides an easy and typically faster way to perform
+thread synchronization operations when supported as a hardware instruction. CAS
+is typically used by lock-free and wait-free algorithms. This extension proposes
+CAS instructions to operate on 32-bit, 64-bit, and 128-bit (RV64 only) data
+values. The CAS instruction supports the C++11 atomic compare and exchange
+operation.
+
+While compare-and-swap for XLEN wide data may be accomplished using LR/SC, the
+CAS atomic instructions scale better to highly parallel systems than LR/SC.
+Many lock-free algorithms, such as a lock-free queue, require manipulation of
+pointer variables. A simple CAS operation may not be sufficient to guard against
+what is commonly referred to as the ABA problem in such algorithms that
+manipulate pointer variables. To avoid the ABA problem, the algorithms associate
+a reference counter with the pointer variable and perform updates using a
+quadword compare and swap (of both the pointer and the counter). The double and
+quadword CAS instructions support implementation of algorithms for ABA problem
+avoidance.
+
+
+include::zacas.adoc[]
