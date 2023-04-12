@@ -34,13 +34,14 @@ endif::[]
 :xrefstyle: short
 
 = Atomic compare-and-Swap (CAS) instructions (Zacas)
-Ved Shanbhogue
 
 // Preamble
 [WARNING]
-.This document is in the link:http://riscv.org/spec-state[Stable state]
+.This document is in the link:http://riscv.org/spec-state[Development state]
 ====
-Assume anything could still change, but limited change should be expected.
+Assume everything can change. This draft specification will change before 
+being accepted as standard, so implementations made to this draft 
+specification will likely not conform to the future standard.
 ====
 
 [preface]
