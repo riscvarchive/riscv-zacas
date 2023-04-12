@@ -114,7 +114,8 @@ in `rs2` and `rd`.
 Just as for AMOs in the A extension, `AMOCAS.W/D/Q` requires that the address
 held in `rs1` be naturally aligned to the size of the operand (i.e., 16-byte
 aligned for 128-bit words, eight-byte aligned for 64-bit words, and four-byte
-aligned for 32-bit words).
+aligned for 32-bit words). And the same exception options apply if the address
+is not naturally aligned.
 
 Just as for AMOs in the A extension, the `AMOCAS.W/D/Q` optionally provides
 release consistency semantics, using the `aq` and `rl` bits, to help implement
