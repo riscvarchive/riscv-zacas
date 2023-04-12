@@ -68,11 +68,11 @@ The operation performed by `AMOCAS.D` for RV32 is as follows:
     temp0 = *([rs1]+0)
     temp1 = *([rs1]+4)
 
-    comp0 = (rd == 0)  ? 0 : [rd];
-    comp1 = (rd == 0)  ? 0 : [rd+1];
+    comp0 = (rd == x0)  ? 0 : [rd];
+    comp1 = (rd == x0)  ? 0 : [rd+1];
 
-    swap0 = (rs2 == 0) ? 0 : [rs2];
-    swap1 = (rs2 == 0) ? 0 : [rs2+1];
+    swap0 = (rs2 == x0) ? 0 : [rs2];
+    swap1 = (rs2 == x0) ? 0 : [rs2+1];
 
     If (temp0 == comp0) && (temp1 == comp1)
         *([rs1]+0) = swap0
@@ -130,17 +130,16 @@ and neither destination register is written.
 
 The operation performed by `AMOCAS.Q` is as follows:
 
-.`AMOCAS.Q` operation
 [source, ruby]
 ----
     temp0 = *([rs1]+0)
     temp1 = *([rs1]+8)
 
-    comp0 = (rd == 0)  ? 0 : [rd];
-    comp1 = (rd == 0)  ? 0 : [rd+1];
+    comp0 = (rd == x0)  ? 0 : [rd];
+    comp1 = (rd == x0)  ? 0 : [rd+1];
 
-    swap0 = (rs2 == 0) ? 0 : [rs2];
-    swap1 = (rs2 == 0) ? 0 : [rs2+1];
+    swap0 = (rs2 == x0) ? 0 : [rs2];
+    swap1 = (rs2 == x0) ? 0 : [rs2+1];
 
     If (temp0 == comp0) && (temp1 == comp1)
         *([rs1]+0) = swap0
@@ -162,25 +161,11 @@ in `rs2` and `rd`.
 Just as for AMOs in the A extension, `AMOCAS.W/D/Q` requires that the address
 held in `rs1` be naturally aligned to the size of the operand (i.e., 16-byte
 aligned for 128-bit words, eight-byte aligned for 64-bit words, and four-byte
-aligned for 32-bit words). If the address is not naturally aligned, an
-address-misaligned exception or an access-fault exception will be generated.
-The access-fault exception can be generated for a memory access that would
-otherwise be able to complete except for the misalignment, if the misaligned
-access should not be emulated. If the misaligned access could be emulated then
-an address-misaligned exception may be generated.
+aligned for 32-bit words).
 
-The draft “Zam” extension, described in Chapter 23, relaxes this requirement
-and specifies the semantics of misaligned AMOs.
-
-Just as for AMOs in the A extension, the `amocas.w/d/q` optionally provides
-release consistency semantics to help implement multiprocessor synchronization.
-If the `aq` bit is set, then no later memory operations in this RISC-V hart can
-be observed to take place before the `amocas.w/d/q` Conversely, if the `rl` bit
-is set, then other RISC-V harts will not observe the instruction before memory
-accesses preceding the instruction in this RISC-V hart. Setting both the `aq`
-and the `rl` bit on an AMO makes the sequence sequentially consistent, meaning
-that it cannot be reordered with earlier or later memory operations from the
-same hart.
+Just as for AMOs in the A extension, the `AMOCAS.W/D/Q` optionally provides
+release consistency semantics, using the `aq` and `rl` bits, to help implement
+multiprocessor synchronization.
 
 == AMO PMA
 
@@ -188,13 +173,13 @@ There are four levels of support defined within AMOs in the  A extension. Zacas
 defines three additional levels of support: `AMOCasW`, `AMOCasD`, and `AMOCasQ`.
 
 `AMOCasW` indicates that in addition to instructions indicated by `AMOArithmetic`
-level support, the `amocas.w` instruction is supported. `AMOCasD` indicates that
-in addition to instructions indicated by `AMOCasW` level support, the `amocas.d`
+level support, the `AMOCAS.W` instruction is supported. `AMOCasD` indicates that
+in addition to instructions indicated by `AMOCasW` level support, the `AMOCAS.D`
 instruction is supported. `AMOCasQ` indicates that all RISC-V AMOs are supported.
 
 [NOTE]
 ====
-`AMOCasW/D/Q` requires `AMOArithmetic` level support as the `amocas.w/d/q`
+`AMOCasW/D/Q` requires `AMOArithmetic` level support as the `AMOCAS.W/D/Q`
 instructions require ability to perform an arithmetic comparison and a swap
 operation. 
 ====
