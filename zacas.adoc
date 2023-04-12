@@ -21,7 +21,6 @@ comparison is bitwise equal, then stores the 32-bit value held in `rs2` to
 the original address in `rs1`. The value loaded from memory is placed into
 register `rd`. For RV64, `AMOCAS.W` always sign-extends the value placed in
 `rd`, and ignores the upper 32 bits of the original value in `rd` and `rs2`.
-
 The operation performed by `AMOCAS.W` is as follows:
 
 [source, ruby]
@@ -46,7 +45,6 @@ in `rs2` and `rd` are reserved. When the first register of a source register
 pair is `x0`, then both halves of the pair read as zero. When the first
 register of a destination register pair is `x0`, then the entire register
 result is discarded and neither destination register is written.
-
 The operation performed by `AMOCAS.D` for RV32 is as follows:
 [source, ruby]
 ----
@@ -70,10 +68,7 @@ For RV64, `AMOCAS.D` atomically loads 64-bits of a data value from address in
 `rs1`, compares the loaded value to a 64-bit value held in `rd` and if the
 comparison is bitwise equal, then stores the 64-bit value held in `rs2` to the
 original address in `rs1`. The value loaded from memory is placed into register
-`rd`.
-
-The operation performed by `AMOCAS.D` for RV64 is as follows:
-
+`rd`. The operation performed by `AMOCAS.D` for RV64 is as follows:
 [source, ruby]
 ----
     temp = *[rs1]
@@ -82,7 +77,6 @@ The operation performed by `AMOCAS.D` for RV64 is as follows:
     endif
     [rd] = temp
 ----
-
 `AMOCAS.Q` (RV64 only) atomically loads 128-bits of a data value from address in
 `rs1`, compares the loaded value to a 128-bits value held in a register pair
 consisting of `rd` and `rd+1` and if the comparison is bitwise equal, then
@@ -93,9 +87,8 @@ the pair to be even numbered; encodings with odd numbered registers specified in
 `rs2` and `rd` are reserved. When the first register of a source register pair
 is `x0`, then both halves of the pair read as zero. When the first register of a
 destination register pair is `x0`, then the entire register result is discarded
-and neither destination register is written.
-
-The operation performed by `AMOCAS.Q` is as follows:
+and neither destination register is written. The operation performed by
+`AMOCAS.Q` is as follows:
 [source, ruby]
 ----
     temp0 = *([rs1]+0)
@@ -113,13 +106,11 @@ The operation performed by `AMOCAS.Q` is as follows:
         [rd+1] = temp1
     endif
 ----
-
 [NOTE]
 ====
 For a future RV128 extension, `AMOCAS.Q` would encode a single XLEN=128 register
 in `rs2` and `rd`.
 ====
-
 Just as for AMOs in the A extension, `AMOCAS.W/D/Q` requires that the address
 held in `rs1` be naturally aligned to the size of the operand (i.e., 16-byte
 aligned for 128-bit words, eight-byte aligned for 64-bit words, and four-byte
