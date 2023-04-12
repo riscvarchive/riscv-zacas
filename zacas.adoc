@@ -1,13 +1,6 @@
 [[chapter2]]
 == Word/Doubleword/Quadword CAS (AMOCAS.W/D/Q)
 
-`AMOCAS.W` atomically loads 32-bits of a data value from address in `rs1`,
-compares the loaded value to a 32-bit value held in `rd` and if the
-comparison is bitwise equal, then stores the 32-bit value held in `rs2` to
-the original address in `rs1`. The value loaded from memory is placed into
-register `rd`. For RV64, `AMOCAS.W` always sign-extends the value placed in
-`rd`, and ignores the upper 32 bits of the original value in `rd` and `rs2`.
-
 [wavedrom, , ] 
 .... 
 {reg: [
@@ -22,19 +15,6 @@ register `rd`. For RV64, `AMOCAS.W` always sign-extends the value placed in
 ], config:{lanes: 1, hspace:1024}}
 ....
 
-The operation performed by `AMOCAS.W` is as follows:
-
-[source, ruby]
-----
-    temp = *[rs1]
-    if temp == [rd]
-        *[rs1] = [rs2]
-    endif
-    [rd] = temp
-----
-
-`AMOCAS.D` is similar to `AMOCAS.W` but operates on 64-bit data values.
-
 [wavedrom, , ] 
 .... 
 {reg: [
@@ -48,6 +28,40 @@ The operation performed by `AMOCAS.W` is as follows:
   {bits:  5, name: '00101', attr:'AMOCAS.D'},
 ], config:{lanes: 1, hspace:1024}}
 ....
+
+[wavedrom, , ] 
+.... 
+{reg: [
+  {bits:  7, name: 'opcode', attr:'AMO'},
+  {bits:  5, name: 'rd', attr:'dest'},
+  {bits:  3, name: '100', attr:'width'},
+  {bits:  5, name: 'rs1', attr:'addr'},
+  {bits:  5, name: 'rs2', attr:'src'},
+  {bits:  1, name: 'rl'},
+  {bits:  1, name: 'aq'},
+  {bits:  5, name: '00101', attr:'AMOCAS.Q'},
+], config:{lanes: 1, hspace:1024}}
+....
+
+`AMOCAS.W` atomically loads 32-bits of a data value from address in `rs1`,
+compares the loaded value to a 32-bit value held in `rd` and if the
+comparison is bitwise equal, then stores the 32-bit value held in `rs2` to
+the original address in `rs1`. The value loaded from memory is placed into
+register `rd`. For RV64, `AMOCAS.W` always sign-extends the value placed in
+`rd`, and ignores the upper 32 bits of the original value in `rd` and `rs2`.
+
+The operation performed by `AMOCAS.W` is as follows:
+
+[source, ruby]
+----
+    temp = *[rs1]
+    if temp == [rd]
+        *[rs1] = [rs2]
+    endif
+    [rd] = temp
+----
+
+`AMOCAS.D` is similar to `AMOCAS.W` but operates on 64-bit data values.
 
 For RV32, `AMOCAS.D` atomically loads 64-bits of a data value from address in
 `rs1`, compares the loaded value to a 64-bits value held in a register pair
@@ -113,20 +127,6 @@ the pair to be even numbered; encodings with odd numbered registers specified in
 is `x0`, then both halves of the pair read as zero. When the first register of a
 destination register pair is `x0`, then the entire register result is discarded
 and neither destination register is written.
-
-[wavedrom, , ] 
-.... 
-{reg: [
-  {bits:  7, name: 'opcode', attr:'AMO'},
-  {bits:  5, name: 'rd', attr:'dest'},
-  {bits:  3, name: '100', attr:'width'},
-  {bits:  5, name: 'rs1', attr:'addr'},
-  {bits:  5, name: 'rs2', attr:'src'},
-  {bits:  1, name: 'rl'},
-  {bits:  1, name: 'aq'},
-  {bits:  5, name: '00101', attr:'AMOCAS.Q'},
-], config:{lanes: 1, hspace:1024}}
-....
 
 The operation performed by `AMOCAS.Q` is as follows:
 
