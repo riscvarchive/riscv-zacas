@@ -54,7 +54,7 @@ https://creativecommons.org/licenses/by/4.0/.
 Copyright 2022 by RISC-V International.
 
 [preface]
-=== Contributors
+== Contributors
 This RISC-V specification has been contributed to directly or indirectly by:
 Greg Favor, Ved Shanbhogue
 
