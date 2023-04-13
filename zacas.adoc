@@ -117,13 +117,13 @@ aligned for 128-bit words, eight-byte aligned for 64-bit words, and four-byte
 aligned for 32-bit words). And the same exception options apply if the address
 is not naturally aligned.
 
-Just as for AMOs in the A extension, the `AMOCAS.W/D/Q` optionally provides
+Just as for AMOs in the A extension, the `AMOCAS.W/D/Q` optionally provide
 release consistency semantics, using the `aq` and `rl` bits, to help implement
 multiprocessor synchronization.
 
-== AMO PMA
+== Additional AMO PMAs
 
-There are four levels of support defined within AMOs in the  A extension. Zacas
+There are four levels of PMA support defined for AMOs in the A extension. Zacas
 defines three additional levels of support: `AMOCasW`, `AMOCasD`, and `AMOCasQ`.
 
 `AMOCasW` indicates that in addition to instructions indicated by `AMOArithmetic`
@@ -133,7 +133,7 @@ instruction is supported. `AMOCasQ` indicates that all RISC-V AMOs are supported
 
 [NOTE]
 ====
-`AMOCasW/D/Q` requires `AMOArithmetic` level support as the `AMOCAS.W/D/Q`
+`AMOCasW/D/Q` require `AMOArithmetic` level support as the `AMOCAS.W/D/Q`
 instructions require ability to perform an arithmetic comparison and a swap
 operation. 
 ====
