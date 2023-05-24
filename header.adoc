@@ -33,7 +33,7 @@ endif::[]
 :footnote:
 :xrefstyle: short
 
-= Atomic compare-and-Swap (CAS) instructions (Zacas)
+= Atomic Compare-and-swap (CAS) instructions (Zacas)
 
 // Preamble
 [WARNING]
