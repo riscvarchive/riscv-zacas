@@ -121,6 +121,17 @@ Just as for AMOs in the A extension, the `AMOCAS.W/D/Q` optionally provide
 release consistency semantics, using the `aq` and `rl` bits, to help implement
 multiprocessor synchronization.
 
+[NOTE]
+====
+Some algorithms may load the previous data value of a memory location into the
+register used as the compare data value source by a Zacas instruction. When
+using a Zacas instruction that uses a register pair to source the compare value,
+the pair may be setup with using two individual loads. The two individual loads
+may read an inconsistent pair of values but that is not an issue as the `AMOCAS`
+operation itself uses an atomic load-pair from memory to obtain the data value
+for comparison.
+====
+
 == Additional AMO PMAs
 
 There are four levels of PMA support defined for AMOs in the A extension. Zacas
