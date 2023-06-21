@@ -25,11 +25,11 @@ The operation performed by `AMOCAS.W` is as follows:
 
 [source, ruby]
 ----
-    temp = *[rs1]
-    if temp == [rd]
-        *[rs1] = [rs2]
+    temp = *x[rs1]
+    if temp == x[rd]
+        *x[rs1] = x[rs2]
     endif
-    [rd] = temp
+    x[rd] = temp
 ----
 
 `AMOCAS.D` is similar to `AMOCAS.W` but operates on 64-bit data values.
@@ -48,19 +48,19 @@ result is discarded and neither destination register is written.
 The operation performed by `AMOCAS.D` for RV32 is as follows:
 [source, ruby]
 ----
-    temp0 = *([rs1]+0)
-    temp1 = *([rs1]+4)
-    comp0 = (rd == x0)  ? 0 : [rd]
-    comp1 = (rd == x0)  ? 0 : [rd+1]
-    swap0 = (rs2 == x0) ? 0 : [rs2]
-    swap1 = (rs2 == x0) ? 0 : [rs2+1]
+    temp0 = *(x[rs1]+0)
+    temp1 = *(x[rs1]+4)
+    comp0 = (rd == x0)  ? 0 : x[rd]
+    comp1 = (rd == x0)  ? 0 : x[rd+1]
+    swap0 = (rs2 == x0) ? 0 : x[rs2]
+    swap1 = (rs2 == x0) ? 0 : x[rs2+1]
     if (temp0 == comp0) && (temp1 == comp1)
-        *([rs1]+0) = swap0
-        *([rs1]+4) = swap1
+        *(x[rs1]+0) = swap0
+        *(x[rs1]+4) = swap1
     endif
     if ( rd != x0 )
-        [rd]   = temp0
-        [rd+1] = temp1
+        x[rd]   = temp0
+        x[rd+1] = temp1
     endif
 ----
 
@@ -71,11 +71,11 @@ original address in `rs1`. The value loaded from memory is placed into register
 `rd`. The operation performed by `AMOCAS.D` for RV64 is as follows:
 [source, ruby]
 ----
-    temp = *[rs1]
-    if temp == [rd]
-        *[rs1] = [rs2]
+    temp = *x[rs1]
+    if temp == x[rd]
+        *x[rs1] = x[rs2]
     endif
-    [rd] = temp
+    x[rd] = temp
 ----
 `AMOCAS.Q` (RV64 only) atomically loads 128-bits of a data value from address in
 `rs1`, compares the loaded value to a 128-bits value held in a register pair
@@ -91,19 +91,19 @@ and neither destination register is written. The operation performed by
 `AMOCAS.Q` is as follows:
 [source, ruby]
 ----
-    temp0 = *([rs1]+0)
-    temp1 = *([rs1]+8)
-    comp0 = (rd == x0)  ? 0 : [rd]
-    comp1 = (rd == x0)  ? 0 : [rd+1]
-    swap0 = (rs2 == x0) ? 0 : [rs2]
-    swap1 = (rs2 == x0) ? 0 : [rs2+1]
+    temp0 = *(x[rs1]+0)
+    temp1 = *(x[rs1]+8)
+    comp0 = (rd == x0)  ? 0 : x[rd]
+    comp1 = (rd == x0)  ? 0 : x[rd+1]
+    swap0 = (rs2 == x0) ? 0 : x[rs2]
+    swap1 = (rs2 == x0) ? 0 : x[rs2+1]
     if (temp0 == comp0) && (temp1 == comp1)
-        *([rs1]+0) = swap0
-        *([rs1]+8) = swap1
+        *(x[rs1]+0) = swap0
+        *(x[rs1]+8) = swap1
     endif
     if ( rd != x0 )
-        [rd]   = temp0
-        [rd+1] = temp1
+        x[rd]   = temp0
+        x[rd+1] = temp1
     endif
 ----
 [NOTE]
