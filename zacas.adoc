@@ -50,10 +50,10 @@ The operation performed by `AMOCAS.D` for RV32 is as follows:
 ----
     temp0 = *(x[rs1]+0)
     temp1 = *(x[rs1]+4)
-    comp0 = (rd == x0)  ? 0 : x[rd];
-    comp1 = (rd == x0)  ? 0 : x[rd+1];
-    swap0 = (rs2 == x0) ? 0 : x[rs2];
-    swap1 = (rs2 == x0) ? 0 : x[rs2+1];
+    comp0 = (rd == x0)  ? 0 : x[rd]
+    comp1 = (rd == x0)  ? 0 : x[rd+1]
+    swap0 = (rs2 == x0) ? 0 : x[rs2]
+    swap1 = (rs2 == x0) ? 0 : x[rs2+1]
     If (temp0 == comp0) && (temp1 == comp1)
         *(x[rs1]+0) = swap0
         *(x[rs1]+4) = swap1
@@ -93,10 +93,10 @@ and neither destination register is written. The operation performed by
 ----
     temp0 = *(x[rs1]+0)
     temp1 = *(x[rs1]+8)
-    comp0 = (rd == x0)  ? 0 : x[rd];
-    comp1 = (rd == x0)  ? 0 : x[rd+1];
-    swap0 = (rs2 == x0) ? 0 : x[rs2];
-    swap1 = (rs2 == x0) ? 0 : x[rs2+1];
+    comp0 = (rd == x0)  ? 0 : x[rd]
+    comp1 = (rd == x0)  ? 0 : x[rd+1]
+    swap0 = (rs2 == x0) ? 0 : x[rs2]
+    swap1 = (rs2 == x0) ? 0 : x[rs2+1]
     If (temp0 == comp0) && (temp1 == comp1)
         *(x[rs1]+0) = swap0
         *(x[rs1]+8) = swap1
