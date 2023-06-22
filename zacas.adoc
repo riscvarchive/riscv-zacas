@@ -23,13 +23,13 @@ register `rd`. For RV64, `AMOCAS.W` always sign-extends the value placed in
 `rd`, and ignores the upper 32 bits of the original value in `rd` and `rs2`.
 The operation performed by `AMOCAS.W` is as follows:
 
-[source, ruby]
+[listing]
 ----
-    temp = *x[rs1]
-    if temp == x[rd]
-        *x[rs1] = x[rs2]
+    temp = *X[rs1]
+    if temp == X[rd]
+        *X[rs1] = X[rs2]
     endif
-    x[rd] = temp
+    X[rd] = temp
 ----
 
 `AMOCAS.D` is similar to `AMOCAS.W` but operates on 64-bit data values.
@@ -46,21 +46,21 @@ pair is `x0`, then both halves of the pair read as zero. When the first
 register of a destination register pair is `x0`, then the entire register
 result is discarded and neither destination register is written.
 The operation performed by `AMOCAS.D` for RV32 is as follows:
-[source, ruby]
+[listing]
 ----
-    temp0 = *(x[rs1]+0)
-    temp1 = *(x[rs1]+4)
-    comp0 = (rd == x0)  ? 0 : x[rd]
-    comp1 = (rd == x0)  ? 0 : x[rd+1]
-    swap0 = (rs2 == x0) ? 0 : x[rs2]
-    swap1 = (rs2 == x0) ? 0 : x[rs2+1]
+    temp0 = *(X[rs1]+0)
+    temp1 = *(X[rs1]+4)
+    comp0 = (rd == x0)  ? 0 : X[rd]
+    comp1 = (rd == x0)  ? 0 : X[rd+1]
+    swap0 = (rs2 == x0) ? 0 : X[rs2]
+    swap1 = (rs2 == x0) ? 0 : X[rs2+1]
     if (temp0 == comp0) && (temp1 == comp1)
-        *(x[rs1]+0) = swap0
-        *(x[rs1]+4) = swap1
+        *(X[rs1]+0) = swap0
+        *(X[rs1]+4) = swap1
     endif
     if ( rd != x0 )
-        x[rd]   = temp0
-        x[rd+1] = temp1
+        X[rd]   = temp0
+        X[rd+1] = temp1
     endif
 ----
 
@@ -69,13 +69,13 @@ For RV64, `AMOCAS.D` atomically loads 64-bits of a data value from address in
 comparison is bitwise equal, then stores the 64-bit value held in `rs2` to the
 original address in `rs1`. The value loaded from memory is placed into register
 `rd`. The operation performed by `AMOCAS.D` for RV64 is as follows:
-[source, ruby]
+[listing]
 ----
-    temp = *x[rs1]
-    if temp == x[rd]
-        *x[rs1] = x[rs2]
+    temp = *X[rs1]
+    if temp == X[rd]
+        *X[rs1] = X[rs2]
     endif
-    x[rd] = temp
+    X[rd] = temp
 ----
 `AMOCAS.Q` (RV64 only) atomically loads 128-bits of a data value from address in
 `rs1`, compares the loaded value to a 128-bits value held in a register pair
@@ -89,21 +89,21 @@ is `x0`, then both halves of the pair read as zero. When the first register of a
 destination register pair is `x0`, then the entire register result is discarded
 and neither destination register is written. The operation performed by
 `AMOCAS.Q` is as follows:
-[source, ruby]
+[listing]
 ----
-    temp0 = *(x[rs1]+0)
-    temp1 = *(x[rs1]+8)
-    comp0 = (rd == x0)  ? 0 : x[rd]
-    comp1 = (rd == x0)  ? 0 : x[rd+1]
-    swap0 = (rs2 == x0) ? 0 : x[rs2]
-    swap1 = (rs2 == x0) ? 0 : x[rs2+1]
+    temp0 = *(X[rs1]+0)
+    temp1 = *(X[rs1]+8)
+    comp0 = (rd == x0)  ? 0 : X[rd]
+    comp1 = (rd == x0)  ? 0 : X[rd+1]
+    swap0 = (rs2 == x0) ? 0 : X[rs2]
+    swap1 = (rs2 == x0) ? 0 : X[rs2+1]
     if (temp0 == comp0) && (temp1 == comp1)
-        *(x[rs1]+0) = swap0
-        *(x[rs1]+8) = swap1
+        *(X[rs1]+0) = swap0
+        *(X[rs1]+8) = swap1
     endif
     if ( rd != x0 )
-        x[rd]   = temp0
-        x[rd+1] = temp1
+        X[rd]   = temp0
+        X[rd+1] = temp1
     endif
 ----
 [NOTE]
@@ -113,8 +113,8 @@ in `rs2` and `rd`.
 ====
 Just as for AMOs in the A extension, `AMOCAS.W/D/Q` requires that the address
 held in `rs1` be naturally aligned to the size of the operand (i.e., 16-byte
-aligned for _quadword_, eight-byte aligned for _doubleword_, and four-byte
-aligned for _word_). And the same exception options apply if the address
+aligned for _quadwords_, eight-byte aligned for _doublewords_, and four-byte
+aligned for _words_). And the same exception options apply if the address
 is not naturally aligned.
 
 Just as for AMOs in the A extension, the `AMOCAS.W/D/Q` optionally provide
@@ -126,10 +126,10 @@ multiprocessor synchronization.
 Some algorithms may load the previous data value of a memory location into the
 register used as the compare data value source by a Zacas instruction. When
 using a Zacas instruction that uses a register pair to source the compare value,
-the pair may be setup with using two individual loads. The two individual loads
-may read an inconsistent pair of values but that is not an issue as the `AMOCAS`
-operation itself uses an atomic load-pair from memory to obtain the data value
-for comparison.
+the two registers may be loaded with using two individual loads. The two
+individual loads may read an inconsistent pair of values but that is not an
+issue as the `AMOCAS` operation itself uses an atomic load-pair from memory to
+obtain the data value for its comparison.
 ====
 
 == Additional AMO PMAs
