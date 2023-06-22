@@ -23,13 +23,13 @@ register `rd`. For RV64, `AMOCAS.W` always sign-extends the value placed in
 `rd`, and ignores the upper 32 bits of the original value in `rd` and `rs2`.
 The operation performed by `AMOCAS.W` is as follows:
 
-[source, ruby]
+[listing]
 ----
-    temp = *[rs1]
-    if temp == [rd]
-        *[rs1] = [rs2]
+    temp = *X[rs1]
+    if temp == X[rd]
+        *X[rs1] = X[rs2]
     endif
-    [rd] = temp
+    X[rd] = temp
 ----
 
 `AMOCAS.D` is similar to `AMOCAS.W` but operates on 64-bit data values.
@@ -46,21 +46,21 @@ pair is `x0`, then both halves of the pair read as zero. When the first
 register of a destination register pair is `x0`, then the entire register
 result is discarded and neither destination register is written.
 The operation performed by `AMOCAS.D` for RV32 is as follows:
-[source, ruby]
+[listing]
 ----
-    temp0 = *([rs1]+0)
-    temp1 = *([rs1]+4)
-    comp0 = (rd == x0)  ? 0 : [rd];
-    comp1 = (rd == x0)  ? 0 : [rd+1];
-    swap0 = (rs2 == x0) ? 0 : [rs2];
-    swap1 = (rs2 == x0) ? 0 : [rs2+1];
-    If (temp0 == comp0) && (temp1 == comp1)
-        *([rs1]+0) = swap0
-        *([rs1]+4) = swap1
+    temp0 = *(X[rs1]+0)
+    temp1 = *(X[rs1]+4)
+    comp0 = (rd == x0)  ? 0 : X[rd]
+    comp1 = (rd == x0)  ? 0 : X[rd+1]
+    swap0 = (rs2 == x0) ? 0 : X[rs2]
+    swap1 = (rs2 == x0) ? 0 : X[rs2+1]
+    if (temp0 == comp0) && (temp1 == comp1)
+        *(X[rs1]+0) = swap0
+        *(X[rs1]+4) = swap1
     endif
     if ( rd != x0 )
-        [rd]   = temp0
-        [rd+1] = temp1
+        X[rd]   = temp0
+        X[rd+1] = temp1
     endif
 ----
 
@@ -69,13 +69,13 @@ For RV64, `AMOCAS.D` atomically loads 64-bits of a data value from address in
 comparison is bitwise equal, then stores the 64-bit value held in `rs2` to the
 original address in `rs1`. The value loaded from memory is placed into register
 `rd`. The operation performed by `AMOCAS.D` for RV64 is as follows:
-[source, ruby]
+[listing]
 ----
-    temp = *[rs1]
-    if temp == [rd]
-        *[rs1] = [rs2]
+    temp = *X[rs1]
+    if temp == X[rd]
+        *X[rs1] = X[rs2]
     endif
-    [rd] = temp
+    X[rd] = temp
 ----
 `AMOCAS.Q` (RV64 only) atomically loads 128-bits of a data value from address in
 `rs1`, compares the loaded value to a 128-bits value held in a register pair
@@ -89,21 +89,21 @@ is `x0`, then both halves of the pair read as zero. When the first register of a
 destination register pair is `x0`, then the entire register result is discarded
 and neither destination register is written. The operation performed by
 `AMOCAS.Q` is as follows:
-[source, ruby]
+[listing]
 ----
-    temp0 = *([rs1]+0)
-    temp1 = *([rs1]+8)
-    comp0 = (rd == x0)  ? 0 : [rd];
-    comp1 = (rd == x0)  ? 0 : [rd+1];
-    swap0 = (rs2 == x0) ? 0 : [rs2];
-    swap1 = (rs2 == x0) ? 0 : [rs2+1];
-    If (temp0 == comp0) && (temp1 == comp1)
-        *([rs1]+0) = swap0
-        *([rs1]+8) = swap1
+    temp0 = *(X[rs1]+0)
+    temp1 = *(X[rs1]+8)
+    comp0 = (rd == x0)  ? 0 : X[rd]
+    comp1 = (rd == x0)  ? 0 : X[rd+1]
+    swap0 = (rs2 == x0) ? 0 : X[rs2]
+    swap1 = (rs2 == x0) ? 0 : X[rs2+1]
+    if (temp0 == comp0) && (temp1 == comp1)
+        *(X[rs1]+0) = swap0
+        *(X[rs1]+8) = swap1
     endif
     if ( rd != x0 )
-        [rd]   = temp0
-        [rd+1] = temp1
+        X[rd]   = temp0
+        X[rd+1] = temp1
     endif
 ----
 [NOTE]
@@ -113,27 +113,38 @@ in `rs2` and `rd`.
 ====
 Just as for AMOs in the A extension, `AMOCAS.W/D/Q` requires that the address
 held in `rs1` be naturally aligned to the size of the operand (i.e., 16-byte
-aligned for 128-bit words, eight-byte aligned for 64-bit words, and four-byte
-aligned for 32-bit words). And the same exception options apply if the address
+aligned for _quadwords_, eight-byte aligned for _doublewords_, and four-byte
+aligned for _words_). And the same exception options apply if the address
 is not naturally aligned.
 
 Just as for AMOs in the A extension, the `AMOCAS.W/D/Q` optionally provide
 release consistency semantics, using the `aq` and `rl` bits, to help implement
 multiprocessor synchronization.
 
+[NOTE]
+====
+Some algorithms may load the previous data value of a memory location into the
+register used as the compare data value source by a Zacas instruction. When
+using a Zacas instruction that uses a register pair to source the compare value,
+the two registers may be loaded with using two individual loads. The two
+individual loads may read an inconsistent pair of values but that is not an
+issue as the `AMOCAS` operation itself uses an atomic load-pair from memory to
+obtain the data value for its comparison.
+====
+
 == Additional AMO PMAs
 
 There are four levels of PMA support defined for AMOs in the A extension. Zacas
-defines three additional levels of support: `AMOCasW`, `AMOCasD`, and `AMOCasQ`.
+defines three additional levels of support: `AMOCASW`, `AMOCASD`, and `AMOCASQ`.
 
-`AMOCasW` indicates that in addition to instructions indicated by `AMOArithmetic`
-level support, the `AMOCAS.W` instruction is supported. `AMOCasD` indicates that
-in addition to instructions indicated by `AMOCasW` level support, the `AMOCAS.D`
-instruction is supported. `AMOCasQ` indicates that all RISC-V AMOs are supported.
+`AMOCASW` indicates that in addition to instructions indicated by `AMOArithmetic`
+level support, the `AMOCAS.W` instruction is supported. `AMOCASD` indicates that
+in addition to instructions indicated by `AMOCASW` level support, the `AMOCAS.D`
+instruction is supported. `AMOCASQ` indicates that all RISC-V AMOs are supported.
 
 [NOTE]
 ====
-`AMOCasW/D/Q` require `AMOArithmetic` level support as the `AMOCAS.W/D/Q`
+`AMOCASW/D/Q` require `AMOArithmetic` level support as the `AMOCAS.W/D/Q`
 instructions require ability to perform an arithmetic comparison and a swap
 operation. 
 ====
