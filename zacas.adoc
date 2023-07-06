@@ -15,13 +15,11 @@
 ], config:{lanes: 1, hspace:1024}}
 ....
 
-`AMOCAS.W` atomically loads 32-bits of a data value from address in `rs1`,
-compares the loaded value to a 32-bit value held in `rd` and if the
-comparison is bitwise equal, then stores the 32-bit value held in `rs2` to
-the original address in `rs1`. The value loaded from memory is placed into
-register `rd`. For RV64, `AMOCAS.W` always sign-extends the value placed in
-`rd`, and ignores the upper 32 bits of the original value in `rd` and `rs2`.
-The operation performed by `AMOCAS.W` is as follows:
+For RV32, `AMOCAS.W` atomically loads a 32-bit data value from address in `rs1`,
+compares the loaded value to the 32-bit value held in `rd` and if the comparison
+is bitwise equal, then stores the 32-bit value held in `rs2` to the original
+address in `rs1`. The value loaded from memory is placed into register `rd`. The
+operation performed by `AMOCAS.W` for RV32 is as follows:
 
 [listing]
 ----
@@ -30,6 +28,22 @@ The operation performed by `AMOCAS.W` is as follows:
         *X[rs1] = X[rs2]
     endif
     X[rd] = temp
+----
+
+For RV64, `AMOCAS.W` atomically loads a 32-bit data value from address in
+`rs1`, compares the loaded value to the lower 32 bits of the value held in `rd`
+and if the comparison is bitwise equal, then stores the lower 32 bits of the
+value held in `rs2` to the original address in `rs1`. The 32-bit value loaded
+from memory is sign extended and is placed into register `rd`. The operation
+performed by `AMOCAS.W` for RV64 is as follows:
+
+[listing]
+----
+    temp[31:0] = *X[rs1]
+    if temp[31:0] == (X[rd])[31:0]
+        *X[rs1] = (X[rs2])[31:0]
+    endif
+    X[rd] = SignExtend(temp[31:0])
 ----
 
 `AMOCAS.D` is similar to `AMOCAS.W` but operates on 64-bit data values.
@@ -130,6 +144,38 @@ the two registers may be loaded using two individual loads. The two individual
 loads may read an inconsistent pair of values but that is not an issue since the
 `AMOCAS` operation itself uses an atomic load-pair from memory to obtain the
 data value for its comparison.
+<<<<<<< HEAD
+=======
+
+The following code sequence illustrates a quadword compare-and-swap operation.
+The registers t3 and t4 that are used to source the compare data value are
+loaded using two individual loads. The registers t5 and t6 hold the swap data
+value. The register a0 holds the address of the memory location operated on by
+the instruction.
+
+[listing]
+----
+   .section .data
+   pointer: .dword 0
+   count:   .dword 0
+   :
+   .section .text
+   :
+   la a0, pointer
+   ld t3, (a0)                # compare value 0 - "old" pointer
+   ld t4, 8(a0)               # compare value 1 - "old" count
+retry:                        # note: amocas reloads "old" values
+   :                          # into (t3, t4) to retry on failure
+   mv t2, t4                  # save count to check if failed
+   mv t5, t3                  # swap value 0 - expectred pointer
+   addi t6, t4, 1             # swap value 1 - updated count
+   amocas.q.aqrl t3, t5, (a0) # quadword compare and swap
+   bne t3, t5, retry          # retry if operation failed
+   bne t4, t2, retry          # retry if operation failed
+   :
+----
+
+>>>>>>> 882ecf4 (fixing typos)
 ====
 
 == Additional AMO PMAs
