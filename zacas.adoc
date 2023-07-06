@@ -144,38 +144,41 @@ the two registers may be loaded using two individual loads. The two individual
 loads may read an inconsistent pair of values but that is not an issue since the
 `AMOCAS` operation itself uses an atomic load-pair from memory to obtain the
 data value for its comparison.
-<<<<<<< HEAD
 =======
 
 The following code sequence illustrates a quadword compare-and-swap operation.
-The registers t3 and t4 that are used to source the compare data value are
-loaded using two individual loads. The registers t5 and t6 hold the swap data
+The registers a6 and a7 that are used to source the compare data value are
+loaded using two individual loads. The registers a4 and a5 hold the swap data
 value. The register a0 holds the address of the memory location operated on by
 the instruction.
 
 [listing]
 ----
-   .section .data
-   pointer: .dword 0
-   count:   .dword 0
-   :
-   .section .text
-   :
-   la a0, pointer
-   ld t3, (a0)                # compare value 0 - "old" pointer
-   ld t4, 8(a0)               # compare value 1 - "old" count
-retry:                        # note: amocas reloads "old" values
-   :                          # into (t3, t4) to retry on failure
-   mv t2, t4                  # save count to check if failed
-   mv t5, t3                  # swap value 0 - expectred pointer
-   addi t6, t4, 1             # swap value 1 - updated count
-   amocas.q.aqrl t3, t5, (a0) # quadword compare and swap
-   bne t3, t5, retry          # retry if operation failed
-   bne t4, t2, retry          # retry if operation failed
-   :
+    # initialize the swap value
+    li a4, new_value0
+    li a5, new_value1
+
+    # initialize the expected value
+    li a2, expected_value0
+    li a3, expected_value1
+
+retry:
+    # load the current value
+    ld a6, 0(a0)
+    ld a7, 8(a0)
+
+    # retry if current value not the expected value
+    bne a6, a2, retry
+    bne a7, a3, retry
+
+    # quadword compare and swap
+    amocas.q.aqrl a6, a4, (a0)
+
+    # retry if CAS failed
+    bne a6, a2, retry
+    bne a7, a3, retry
 ----
 
->>>>>>> 882ecf4 (fixing typos)
 ====
 
 == Additional AMO PMAs
