@@ -144,14 +144,12 @@ the two registers may be loaded using two individual loads. The two individual
 loads may read an inconsistent pair of values but that is not an issue since the
 `AMOCAS` operation itself uses an atomic load-pair from memory to obtain the
 data value for its comparison.
-=======
 
 The following code sequence illustrates a quadword compare-and-swap operation.
 The registers a6 and a7 that are used to source the compare data value are
 loaded using two individual loads. The registers a4 and a5 hold the swap data
 value. The register a0 holds the address of the memory location operated on by
 the instruction.
-
 [listing]
 ----
     # initialize the swap value
@@ -161,7 +159,6 @@ the instruction.
     # initialize the expected value
     li a2, expected_value0
     li a3, expected_value1
-
 retry:
     # load the current value
     ld a6, 0(a0)
