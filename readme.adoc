@@ -1,7 +1,7 @@
 = RISC-V Atomic compare-and-swap (CAS) instructions
 
 The Zacas extension adds support for `amocas.w`, `amocas.d`, and `amocas.q`
-instructions to perform atomic compare-and-swap (CAS) operations.
+instructions to perform atomic Compare-and-Swap (CAS) operations.
 
 = License
 
