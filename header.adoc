@@ -1,5 +1,5 @@
 [[header]]
-:description: Atomic Compare-and-swap (CAS) instructions
+:description: Atomic Compare-and-Swap (CAS) instructions
 :company: RISC-V.org
 :revdate: 6/2023
 :revnumber: 1.0-rc1
@@ -33,7 +33,7 @@ endif::[]
 :footnote:
 :xrefstyle: short
 
-= Atomic Compare-and-swap (CAS) instructions (Zacas)
+= Atomic Compare-and-Swap (CAS) instructions (Zacas)
 
 // Preamble
 [WARNING]
@@ -57,11 +57,11 @@ Copyright 2023 by RISC-V International.
 [preface]
 === Contributors
 This RISC-V specification has been contributed to directly or indirectly by:
-Greg Favor, Ved Shanbhogue
+Greg Favor, Ved Shanbhogue, Andrew Waterman
 
 == Introduction
 
-Compare-and-swap (CAS) provides an easy and typically faster way to perform
+Compare-and-Swap (CAS) provides an easy and typically faster way to perform
 thread synchronization operations when supported as a hardware instruction. CAS
 is typically used by lock-free and wait-free algorithms. This extension proposes
 CAS instructions to operate on 32-bit, 64-bit, and 128-bit (RV64 only) data
