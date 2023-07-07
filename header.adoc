@@ -57,7 +57,7 @@ Copyright 2023 by RISC-V International.
 [preface]
 === Contributors
 This RISC-V specification has been contributed to directly or indirectly by:
-Greg Favor, Ved Shanbhogue
+Greg Favor, Ved Shanbhogue, Andrew Waterman
 
 == Introduction
 
