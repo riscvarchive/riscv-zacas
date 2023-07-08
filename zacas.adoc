@@ -160,8 +160,8 @@ retry:
   sltu a1, a4, a2    # Determine if there is a carry out.
   add  a5, a3, a1    # Add the carry if any to high 32 bits.
   amocas.d.aqrl a2, a4, (a0)
-  bne  a2, a6, retry # If amocas.q failed then retry
-  bne  a3, a7, retry # using current values loaded by amocas.q.
+  bne  a2, a6, retry # If amocas.d failed then retry
+  bne  a3, a7, retry # using current values loaded by amocas.d.
   ret
 ----
 The following example code sequence illustrates the use of `amocas.q` to
