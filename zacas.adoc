@@ -16,7 +16,7 @@
 ....
 
 For RV32, `AMOCAS.W` atomically loads a 32-bit data value from address in `rs1`,
-compares the loaded value to the 32-bit value held in `rd` and if the comparison
+compares the loaded value to the 32-bit value held in `rd`, and if the comparison
 is bitwise equal, then stores the 32-bit value held in `rs2` to the original
 address in `rs1`. The value loaded from memory is placed into register `rd`. The
 operation performed by `AMOCAS.W` for RV32 is as follows:
@@ -31,10 +31,10 @@ operation performed by `AMOCAS.W` for RV32 is as follows:
 ----
 
 For RV64, `AMOCAS.W` atomically loads a 32-bit data value from address in
-`rs1`, compares the loaded value to the lower 32 bits of the value held in `rd`
+`rs1`, compares the loaded value to the lower 32 bits of the value held in `rd`,
 and if the comparison is bitwise equal, then stores the lower 32 bits of the
 value held in `rs2` to the original address in `rs1`. The 32-bit value loaded
-from memory is sign extended and is placed into register `rd`. The operation
+from memory is sign-extended and is placed into register `rd`. The operation
 performed by `AMOCAS.W` for RV64 is as follows:
 
 [listing]
@@ -50,7 +50,7 @@ performed by `AMOCAS.W` for RV64 is as follows:
 
 For RV32, `AMOCAS.D` atomically loads 64-bits of a data value from address in
 `rs1`, compares the loaded value to a 64-bit value held in a register pair
-consisting of `rd` and `rd+1` and if the comparison is bitwise equal, then
+consisting of `rd` and `rd+1`, and if the comparison is bitwise equal, then
 stores the 64-bit value held in the register pair `rs2` and `rs2+1` to the
 original address in `rs1`. The value loaded from memory is placed into the
 register pair `rd` and `rd+1`. The instruction requires the first register in
@@ -79,7 +79,7 @@ The operation performed by `AMOCAS.D` for RV32 is as follows:
 ----
 
 For RV64, `AMOCAS.D` atomically loads 64-bits of a data value from address in
-`rs1`, compares the loaded value to a 64-bit value held in `rd` and if the
+`rs1`, compares the loaded value to a 64-bit value held in `rd`, and if the
 comparison is bitwise equal, then stores the 64-bit value held in `rs2` to the
 original address in `rs1`. The value loaded from memory is placed into register
 `rd`. The operation performed by `AMOCAS.D` for RV64 is as follows:
@@ -93,7 +93,7 @@ original address in `rs1`. The value loaded from memory is placed into register
 ----
 `AMOCAS.Q` (RV64 only) atomically loads 128-bits of a data value from address in
 `rs1`, compares the loaded value to a 128-bit value held in a register pair
-consisting of `rd` and `rd+1` and if the comparison is bitwise equal, then
+consisting of `rd` and `rd+1`, and if the comparison is bitwise equal, then
 stores the 128-bit value held in the register pair `rs2` and `rs2+1` to the
 original address in `rs1`. The value loaded from memory is placed into the
 register pair `rd` and `rd+1`. The instruction requires the first register in
@@ -145,7 +145,7 @@ loads may read an inconsistent pair of values but that is not an issue since the
 `AMOCAS` operation itself uses an atomic load-pair from memory to obtain the
 data value for its comparison.
 
-The following example code sequence illustrates the use of `amocas.d` in a RV32
+The following example code sequence illustrates the use of `AMOCAS.D` in a RV32
 implementation to atomically increment a 64-bit counter.
 [listing]
 ----
@@ -164,10 +164,10 @@ retry:
   bne  a3, a7, retry # using current values loaded by amocas.d.
   ret
 ----
-The following example code sequence illustrates the use of `amocas.q` to
+The following example code sequence illustrates the use of `AMOCAS.Q` to
 implement the _enqueue_ operation for a non-blocking concurrent queue using the
 algorithm outlined in cite:[queue]. The algorithm atomically operates on a
-pointer and its associated modification counter using the `amocas.q` instruction
+pointer and its associated modification counter using the `AMOCAS.Q` instruction
 to avoid the ABA problem.
 [listing]
 ----
@@ -184,11 +184,13 @@ enqueue:
   ld   a7, 8(a0)         # a7 = Tail.count
   ld   a2, (a6)          # a2 = Tail.ptr.next.ptr
   ld   a3, 8(a6)         # a3 = Tail.ptr.next.count
-  bne  a6, a2, enqueue   # Retry if Tail & next are not consistent
-  bne  a7, a3, enqueue   # Retry if Tail & next are not consistent
+  ld   t1, (a0)
+  ld   t2, 8(a0)
+  bne  a6, t1, enqueue   # Retry if Tail & next are not consistent
+  bne  a7, t2, enqueue   # Retry if Tail & next are not consistent
+  beq  a2, x0, move_tail # Was tail pointing to the last node?
   mv   t1, a2            # Save Tail.ptr.next.ptr
   mv   t2, a3            # Save Tail.ptr.next.count
-  beq  a2, x0, move_tail # Was tail pointing to the last node?
   addi a5, a3, 1         # Link the node at the end of the list
   amocas.q.aqrl a2, a4, (a6)
   bne  a2, t1, enqueue   # Retry if CAS failed
