@@ -30,22 +30,6 @@ operation performed by `AMOCAS.W` for RV32 is as follows:
     X(rd) = temp
 ----
 
-For RV64, `AMOCAS.W` atomically loads a 32-bit data value from address in
-`rs1`, compares the loaded value to the lower 32 bits of the value held in `rd`,
-and if the comparison is bitwise equal, then stores the lower 32 bits of the
-value held in `rs2` to the original address in `rs1`. The 32-bit value loaded
-from memory is sign-extended and is placed into register `rd`. The operation
-performed by `AMOCAS.W` for RV64 is as follows:
-
-[listing]
-----
-    temp[31:0] = mem[X(rs1)]
-    if ( temp[31:0] == X(rd)[31:0] )
-        mem[X(rs1)] = X(rs2)[31:0]
-    endif
-    X(rd) = SignExtend(temp[31:0])
-----
-
 `AMOCAS.D` is similar to `AMOCAS.W` but operates on 64-bit data values.
 
 For RV32, `AMOCAS.D` atomically loads 64-bits of a data value from address in
@@ -78,6 +62,22 @@ The operation performed by `AMOCAS.D` for RV32 is as follows:
     endif
 ----
 
+For RV64, `AMOCAS.W` atomically loads a 32-bit data value from address in
+`rs1`, compares the loaded value to the lower 32 bits of the value held in `rd`,
+and if the comparison is bitwise equal, then stores the lower 32 bits of the
+value held in `rs2` to the original address in `rs1`. The 32-bit value loaded
+from memory is sign-extended and is placed into register `rd`. The operation
+performed by `AMOCAS.W` for RV64 is as follows:
+
+[listing]
+----
+    temp[31:0] = mem[X(rs1)]
+    if ( temp[31:0] == X(rd)[31:0] )
+        mem[X(rs1)] = X(rs2)[31:0]
+    endif
+    X(rd) = SignExtend(temp[31:0])
+----
+
 For RV64, `AMOCAS.D` atomically loads 64-bits of a data value from address in
 `rs1`, compares the loaded value to a 64-bit value held in `rd`, and if the
 comparison is bitwise equal, then stores the 64-bit value held in `rs2` to the
@@ -91,6 +91,7 @@ original address in `rs1`. The value loaded from memory is placed into register
     endif
     X(rd) = temp
 ----
+
 `AMOCAS.Q` (RV64 only) atomically loads 128-bits of a data value from address in
 `rs1`, compares the loaded value to a 128-bit value held in a register pair
 consisting of `rd` and `rd+1`, and if the comparison is bitwise equal, then
