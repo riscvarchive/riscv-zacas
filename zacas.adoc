@@ -56,6 +56,7 @@ The operation performed by `AMOCAS.D` for RV32 is as follows:
         mem[X(rs1)+0] = swap0
         mem[X(rs1)+4] = swap1
     endif
+
     if ( rd != x0 )
         X(rd)   = temp0
         X(rd+1) = temp1
