@@ -158,11 +158,14 @@ retry:
   ret
 
 
-                                                                                +
-                                                                                +
-                                                                                +
-                                                                                +
-                                                                                +
+
+
+
+
+
+
+
+
 
 
 The following example code sequence illustrates the use of `AMOCAS.Q` to
