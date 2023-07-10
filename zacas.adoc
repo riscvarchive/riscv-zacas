@@ -156,18 +156,18 @@ retry:
   bne  a2, a6, retry # If amocas.d failed then retry
   bne  a3, a7, retry # using current values loaded by amocas.d.
   ret
+====
 
 
+                                                                               +         
+                                                                               +         
+                                                                               +         
+                                                                               +         
+                                                                               +         
 
 
-
-
-
-
-
-
-
-
+[NOTE]
+====
 The following example code sequence illustrates the use of `AMOCAS.Q` to
 implement the _enqueue_ operation for a non-blocking concurrent queue using the
 algorithm outlined in cite:[queue]. The algorithm atomically operates on a
