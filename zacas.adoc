@@ -26,7 +26,6 @@ operation performed by `AMOCAS.W` for RV32 is as follows:
     temp = mem[X(rs1)]
     if ( temp == X(rd) )
         mem[X(rs1)] = X(rs2)
-    endif
     X(rd) = temp
 ----
 
@@ -42,7 +41,6 @@ performed by `AMOCAS.W` for RV64 is as follows:
     temp[31:0] = mem[X(rs1)]
     if ( temp[31:0] == X(rd)[31:0] )
         mem[X(rs1)] = X(rs2)[31:0]
-    endif
     X(rd) = SignExtend(temp[31:0])
 ----
 
@@ -88,7 +86,6 @@ original address in `rs1`. The value loaded from memory is placed into register
     temp = mem[X(rs1)]
     if ( temp == X(rd) )
         mem[X(rs1)] = X(rs2)
-    endif
     X(rd) = temp
 ----
 `AMOCAS.Q` (RV64 only) atomically loads 128-bits of a data value from address in
