@@ -161,7 +161,13 @@ The following example code sequence illustrates the use of `AMOCAS.Q` to
 implement the _enqueue_ operation for a non-blocking concurrent queue using the
 algorithm outlined in cite:[queue]. The algorithm atomically operates on a
 pointer and its associated modification counter using the `AMOCAS.Q` instruction
-to avoid the ABA problem.
+to avoid the ABA problem.+
+                                                                                +
+                                                                                +
+                                                                                +
+                                                                                +
+                                                                                +
+
 [listing]
 # Enqueue operation of a non-blocking concurrent queue.
 # Data structures used by the queue:
