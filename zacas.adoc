@@ -60,6 +60,8 @@ The operation performed by `AMOCAS.D` for RV32 is as follows:
         X(rd+1) = temp1
     endif
 
+<<<
+
 For RV64, `AMOCAS.W` atomically loads a 32-bit data value from address in
 `rs1`, compares the loaded value to the lower 32 bits of the value held in `rd`,
 and if the comparison is bitwise equal, then stores the lower 32 bits of the
