@@ -45,7 +45,6 @@ register of a destination register pair is `x0`, then the entire register
 result is discarded and neither destination register is written.
 The operation performed by `AMOCAS.D` for RV32 is as follows:
 [listing]
-----
     temp0 = mem[X(rs1)+0]
     temp1 = mem[X(rs1)+4]
     comp0 = (rd == x0)  ? 0 : X(rd)
@@ -60,8 +59,7 @@ The operation performed by `AMOCAS.D` for RV32 is as follows:
         X(rd)   = temp0
         X(rd+1) = temp1
     endif
-----
-[%hardbreaks]
+
 For RV64, `AMOCAS.W` atomically loads a 32-bit data value from address in
 `rs1`, compares the loaded value to the lower 32 bits of the value held in `rd`,
 and if the comparison is bitwise equal, then stores the lower 32 bits of the
@@ -70,26 +68,23 @@ from memory is sign-extended and is placed into register `rd`. The operation
 performed by `AMOCAS.W` for RV64 is as follows:
 
 [listing]
-----
     temp[31:0] = mem[X(rs1)]
     if ( temp[31:0] == X(rd)[31:0] )
         mem[X(rs1)] = X(rs2)[31:0]
     endif
     X(rd) = SignExtend(temp[31:0])
-----
+
 For RV64, `AMOCAS.D` atomically loads 64-bits of a data value from address in
 `rs1`, compares the loaded value to a 64-bit value held in `rd`, and if the
 comparison is bitwise equal, then stores the 64-bit value held in `rs2` to the
 original address in `rs1`. The value loaded from memory is placed into register
 `rd`. The operation performed by `AMOCAS.D` for RV64 is as follows:
 [listing]
-----
     temp = mem[X(rs1)]
     if ( temp == X(rd) )
         mem[X(rs1)] = X(rs2)
     endif
     X(rd) = temp
-----
 
 `AMOCAS.Q` (RV64 only) atomically loads 128-bits of a data value from address in
 `rs1`, compares the loaded value to a 128-bit value held in a register pair
@@ -104,7 +99,6 @@ destination register pair is `x0`, then the entire register result is discarded
 and neither destination register is written. The operation performed by
 `AMOCAS.Q` is as follows:
 [listing]
-----
     temp0 = mem[X(rs1)+0]
     temp1 = mem[X(rs1)+8]
     comp0 = (rd == x0)  ? 0 : X(rd)
@@ -119,7 +113,7 @@ and neither destination register is written. The operation performed by
         X(rd)   = temp0
         X(rd+1) = temp1
     endif
-----
+
 [NOTE]
 ====
 For a future RV128 extension, `AMOCAS.Q` would encode a single XLEN=128 register
@@ -148,7 +142,6 @@ data value for its comparison.
 The following example code sequence illustrates the use of `AMOCAS.D` in a RV32
 implementation to atomically increment a 64-bit counter.
 [listing]
-----
 # a0 - address of the counter.
 increment:
   lw   a2, (a0)      # Load current counter value using
@@ -163,14 +156,13 @@ retry:
   bne  a2, a6, retry # If amocas.d failed then retry
   bne  a3, a7, retry # using current values loaded by amocas.d.
   ret
-----
+
 The following example code sequence illustrates the use of `AMOCAS.Q` to
 implement the _enqueue_ operation for a non-blocking concurrent queue using the
 algorithm outlined in cite:[queue]. The algorithm atomically operates on a
 pointer and its associated modification counter using the `AMOCAS.Q` instruction
 to avoid the ABA problem.
 [listing]
-----
 # Enqueue operation of a non-blocking concurrent queue.
 # Data structures used by the queue:
 #   structure pointer_t {ptr:   node_t *, count: uint64_t}
@@ -202,7 +194,7 @@ move_tail:               # Tail was not pointing to the last node
   addi a3, a3, 1         # Try to swing Tail to the next node
   amocas.q.aqrl a6, a2, (a0)
   j    enqueue           # Retry
-----
+
 ====
 
 == Additional AMO PMAs
