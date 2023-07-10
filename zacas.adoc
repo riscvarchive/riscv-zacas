@@ -56,7 +56,6 @@ The operation performed by `AMOCAS.D` for RV32 is as follows:
         mem[X(rs1)+0] = swap0
         mem[X(rs1)+4] = swap1
     endif
-
     if ( rd != x0 )
         X(rd)   = temp0
         X(rd+1) = temp1
@@ -78,7 +77,7 @@ performed by `AMOCAS.W` for RV64 is as follows:
     endif
     X(rd) = SignExtend(temp[31:0])
 ----
-
+ +
 For RV64, `AMOCAS.D` atomically loads 64-bits of a data value from address in
 `rs1`, compares the loaded value to a 64-bit value held in `rd`, and if the
 comparison is bitwise equal, then stores the 64-bit value held in `rs2` to the
