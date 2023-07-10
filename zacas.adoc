@@ -184,8 +184,8 @@ enqueue:
   bne  a6, t1, enqueue   # Retry if Tail & next are not consistent
   bne  a7, t2, enqueue   # Retry if Tail & next are not consistent
   bne  a2, x0, move_tail # Was tail pointing to the last node?
-  mv   t1, a2            # Save Tail.ptr.next.ptr
-  mv   t2, a3            # Save Tail.ptr.next.count
+  mv   t1, a2            # Save Tail.ptr->next.ptr
+  mv   t2, a3            # Save Tail.ptr->next.count
   addi a5, a3, 1         # Link the node at the end of the list
   amocas.q.aqrl a2, a4, (a6)
   bne  a2, t1, enqueue   # Retry if CAS failed
