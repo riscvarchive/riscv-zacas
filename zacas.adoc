@@ -177,13 +177,13 @@ to avoid the ABA problem.
 enqueue:
   ld   a6, (a0)          # a6 = Tail.ptr
   ld   a7, 8(a0)         # a7 = Tail.count
-  ld   a2, (a6)          # a2 = Tail.ptr.next.ptr
-  ld   a3, 8(a6)         # a3 = Tail.ptr.next.count
+  ld   a2, (a6)          # a2 = Tail.ptr->next.ptr
+  ld   a3, 8(a6)         # a3 = Tail.ptr->next.count
   ld   t1, (a0)
   ld   t2, 8(a0)
   bne  a6, t1, enqueue   # Retry if Tail & next are not consistent
   bne  a7, t2, enqueue   # Retry if Tail & next are not consistent
-  beq  a2, x0, move_tail # Was tail pointing to the last node?
+  bne  a2, x0, move_tail # Was tail pointing to the last node?
   mv   t1, a2            # Save Tail.ptr.next.ptr
   mv   t2, a3            # Save Tail.ptr.next.count
   addi a5, a3, 1         # Link the node at the end of the list
@@ -194,7 +194,7 @@ enqueue:
   amocas.q.aqrl a6, a4, (a0)
   ret                    # Enqueue done
 move_tail:               # Tail was not pointing to the last node
-  addi a3, a3, 1         # Try to swing Tail to the next node
+  addi a3, a7, 1         # Try to swing Tail to the next node
   amocas.q.aqrl a6, a2, (a0)
   j    enqueue           # Retry
 
