@@ -116,15 +116,6 @@ and neither destination register is written. The operation performed by
 For a future RV128 extension, `AMOCAS.Q` would encode a single XLEN=128 register
 in `rs2` and `rd`.
 ====
-Just as for AMOs in the A extension, `AMOCAS.W/D/Q` requires that the address
-held in `rs1` be naturally aligned to the size of the operand (i.e., 16-byte
-aligned for _quadwords_, eight-byte aligned for _doublewords_, and four-byte
-aligned for _words_). And the same exception options apply if the address
-is not naturally aligned.
-
-Just as for AMOs in the A extension, the `AMOCAS.W/D/Q` optionally provide
-release consistency semantics, using the `aq` and `rl` bits, to help implement
-multiprocessor synchronization.
 
 [NOTE]
 ====
@@ -154,6 +145,16 @@ retry:
   bne  a3, a7, retry # using current values loaded by amocas.d.
   ret
 ====
+
+Just as for AMOs in the A extension, `AMOCAS.W/D/Q` requires that the address
+held in `rs1` be naturally aligned to the size of the operand (i.e., 16-byte
+aligned for _quadwords_, eight-byte aligned for _doublewords_, and four-byte
+aligned for _words_). And the same exception options apply if the address
+is not naturally aligned.
+
+Just as for AMOs in the A extension, the `AMOCAS.W/D/Q` optionally provide
+release consistency semantics, using the `aq` and `rl` bits, to help implement
+multiprocessor synchronization.
 
 <<<
 
