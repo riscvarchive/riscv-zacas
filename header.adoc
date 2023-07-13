@@ -2,7 +2,7 @@
 :description: Atomic Compare-and-Swap (CAS) instructions
 :company: RISC-V.org
 :revdate: 6/2023
-:revnumber: 1.0-rc1
+:revnumber: 1.0-rc2
 :revremark: This document is in stable state. See http://riscv.org/spec-state for details.
 :url-riscv: http://riscv.org
 :doctype: book
