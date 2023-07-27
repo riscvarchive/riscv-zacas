@@ -160,8 +160,8 @@ release semantics if `rl` bit is 1. The memory operation performed by an
 `AMOCAS.W/D/Q`, when not successful, has acquire semantics if `aq` bit is 1 but
 does not have release semantics, regardless of `rl`.
 
-A FENCE instruction may be used to order the memory read and, if produced, the
-memory write by an `AMOCAS.W/D/Q` instruction.
+A FENCE instruction may be used to order the memory read access and, if
+produced, the memory write access by an `AMOCAS.W/D/Q` instruction.
 
 [NOTE]
 ====
