@@ -154,7 +154,23 @@ is not naturally aligned.
 
 Just as for AMOs in the A extension, the `AMOCAS.W/D/Q` optionally provide
 release consistency semantics, using the `aq` and `rl` bits, to help implement
-multiprocessor synchronization.
+multiprocessor synchronization. The memory operation performed by an
+`AMOCAS.W/D/Q`, when successful, has acquire semantics if `aq` bit is 1 and has
+release semantics if `rl` bit is 1. The memory operation performed by an
+`AMOCAS.W/D/Q`, when not successful, has acquire semantics if `aq` bit is 1 but
+does not have release semantics, regardless of `rl`.
+
+A FENCE instruction may be used to order the memory read access and, if
+produced, the memory write access by an `AMOCAS.W/D/Q` instruction.
+
+[NOTE]
+====
+An unsuccessful `AMOCAS.W/D/Q` may either not perform a memory write or may
+write back the old value loaded from memory. The memory write, if produced, does
+not have release semantics, regardless of `rl`.
+====
+
+An `AMOCAS.W/D/Q` instruction always requires write permissions.
 
 <<<
 
