@@ -225,7 +225,8 @@ defines three additional levels of support: `AMOCASW`, `AMOCASD`, and `AMOCASQ`.
 `AMOCASW` indicates that in addition to instructions indicated by `AMOArithmetic`
 level support, the `AMOCAS.W` instruction is supported. `AMOCASD` indicates that
 in addition to instructions indicated by `AMOCASW` level support, the `AMOCAS.D`
-instruction is supported. `AMOCASQ` indicates that all RISC-V AMOs are supported.
+instruction is supported. `AMOCASQ` indicates that in addition to instructions
+indicated by `AMOCASW` level support, the `AMOCAS.Q` instruction is supported.
 
 [NOTE]
 ====
