@@ -1,3 +1,8 @@
+[NOTE]
+====
+Atomic compare-and-swap (Zacas) has been merged into the Unprivileged Specification.  Please log any issues against the link:https://github.com/riscv/riscv-isa-manual[RISC-V ISA Manual] repository.
+====
+
 = RISC-V Atomic compare-and-swap (CAS) instructions
 
 The Zacas extension adds support for `amocas.w`, `amocas.d`, and `amocas.q`
