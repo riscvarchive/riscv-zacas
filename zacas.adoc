@@ -1,7 +1,7 @@
 [[chapter2]]
 == Word/Doubleword/Quadword CAS (AMOCAS.W/D/Q)
 
-[wavedrom, , ] 
+[wavedrom, ,svg] 
 .... 
 {reg: [
   {bits:  7, name: 'opcode', attr:'AMO'},
